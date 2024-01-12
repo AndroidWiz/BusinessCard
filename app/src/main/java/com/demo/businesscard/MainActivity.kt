@@ -5,9 +5,11 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -32,6 +34,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
@@ -104,7 +107,7 @@ fun CreateBusinessCard() {
     }
 }
 
-@Preview(showBackground = true)
+//@Preview(showBackground = true)
 @Composable
 fun Content() {
     Box(
@@ -131,7 +134,30 @@ fun Portfolio(data: List<String>) {
     // scrollable, recycler views
     LazyColumn(modifier = Modifier.padding(10.dp)) {
         items(data) { item ->
-            Text(item)
+            Card(
+                modifier = Modifier
+                    .padding(13.dp)
+                    .fillMaxWidth(),
+                shape = RectangleShape,
+                elevation = 4.dp
+            ) {
+                Row(
+                    modifier = Modifier
+                        .padding(7.dp)
+                        .background(MaterialTheme.colors.surface)
+                        .padding(16.dp)
+                ) {
+                    CreateImageProfile(modifier = Modifier.size(90.dp))
+                    Column(
+                        modifier = Modifier
+                            .padding(7.dp)
+                            .align(alignment = Alignment.CenterVertically)
+                    ) {
+                        Text(text = item, fontWeight = FontWeight.Bold)
+                        Text(text = "Project details", style = MaterialTheme.typography.body2)
+                    }
+                }
+            }
         }
     }
 }
