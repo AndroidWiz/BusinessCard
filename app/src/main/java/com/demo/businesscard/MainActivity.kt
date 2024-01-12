@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,15 +15,20 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Button
 import androidx.compose.material.Card
 import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -54,6 +60,10 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun CreateBusinessCard() {
+    val buttonClickedState = remember {
+        mutableStateOf(false)
+    }
+
     Surface(
         modifier = Modifier
             .fillMaxWidth()
@@ -76,8 +86,52 @@ fun CreateBusinessCard() {
                 CreateImageProfile()
                 Divider(thickness = 2.dp)
                 CreateInfo()
-
+                Button(onClick = {
+                    buttonClickedState.value = !buttonClickedState.value // toggle back and forth
+                }) {
+                    Text(
+                        text = "Portfolio",
+                        style = MaterialTheme.typography.button
+                    )
+                }
+                if (buttonClickedState.value) {
+                    Content()
+                } else {
+                    Box() {}
+                }
             }
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun Content() {
+    Box(
+        modifier = Modifier
+            .fillMaxHeight()
+            .fillMaxWidth()
+            .padding(5.dp)
+    ) {
+        Surface(
+            modifier = Modifier
+                .padding(3.dp)
+                .fillMaxWidth()
+                .fillMaxHeight(),
+            shape = RoundedCornerShape(corner = CornerSize(16.dp)),
+            border = BorderStroke(width = 2.dp, color = Color.LightGray)
+        ) {
+            Portfolio(data = listOf("Project 1", "Project 2", "Project 3"))
+        }
+    }
+}
+
+@Composable
+fun Portfolio(data: List<String>) {
+    // scrollable, recycler views
+    LazyColumn(modifier = Modifier.padding(10.dp)) {
+        items(data) { item ->
+            Text(item)
         }
     }
 }
